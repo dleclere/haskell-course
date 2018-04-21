@@ -1,0 +1,52 @@
+-- Haskell Playground 1.0
+--quickCheck (prop_revApp :: [Int] -> [Int] -> Bool)
+
+quickCheck' $ prop_insert_on_empty_tree ainsert1
+
+quickCheck' $ prop_insert_preserves_bst ainsert1
+
+quickCheck' $ prop_insert_adds_element ainsert1
+
+quickCheck' $ prop_insert_does_not_change_other_elements ainsert1
+
+quickCheck' $ prop_insert_duplicate_check ainsert1
+
+-- 2
+
+quickCheck' $ prop_insert_on_empty_tree ainsert2
+
+quickCheck' $ prop_insert_preserves_bst ainsert2
+
+quickCheck' $ prop_insert_adds_element ainsert2
+
+quickCheck' $ prop_insert_does_not_change_other_elements ainsert2
+
+quickCheck' $ prop_insert_duplicate_check ainsert2
+
+-- 3
+
+quickCheck' $ prop_insert_on_empty_tree ainsert3
+
+quickCheck' $ prop_insert_preserves_bst ainsert3
+
+quickCheck' $ prop_insert_adds_element ainsert3
+
+quickCheck' $ prop_insert_does_not_change_other_elements ainsert3
+
+quickCheck' $ prop_insert_duplicate_check ainsert3
+
+-- 4
+
+quickCheck' $ prop_insert_on_empty_tree ainsert4
+
+quickCheck' $ prop_insert_preserves_bst ainsert4
+
+quickCheck' $ prop_insert_adds_element ainsert4
+
+quickCheck' $ prop_insert_does_not_change_other_elements ainsert4
+
+quickCheck' $ prop_insert_duplicate_check ainsert4
+
+-- Delete
+
+quickCheck' $ prop_delete_removes_element incorrectDelete

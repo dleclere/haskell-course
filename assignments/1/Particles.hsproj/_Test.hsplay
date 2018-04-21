@@ -1,0 +1,28 @@
+-- Haskell Playground 1.0
+let quickCheck' prop 
+      = output <$> 
+          quickCheckWithResult stdArgs{chatty = False} prop
+
+quickCheck' prop_EnergyConservation
+
+let cWorld = World 1.0 9.425909e11 1.0 [Particle 5.5366865e10 (3.779818,-5.2434607) (-17.98015,-31.989529),Particle 1.5708127e11 (0.4419057,-2.0107152) (5.7722425,271.77423),Particle 2.403063e10 (6.3941407,-2.5758226) (-81.19329,5.5783157)]
+
+let aWorld = advanceWorld undefined 0.001 cWorld
+
+let old = worldEnergy cWorld
+
+let new =  worldEnergy aWorld
+
+let change = realToFrac $ old/new
+
+old
+
+new
+
+1 - change
+
+(1 - change) < World.epsilon
+
+(abs (new - old)) / 0.001
+
+(realToFrac ((abs (new - old)) / 0.001)) < World.epsilon

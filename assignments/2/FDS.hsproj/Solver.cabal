@@ -1,0 +1,16 @@
+name: Solver
+version: 1.0
+cabal-version: 1.6
+build-type: Simple
+license: AllRightsReserved
+stability: experimental
+x-ghc-framework-version: 7.10.3-5.4-1
+x-last-ide-version: HfM1.2.0
+Executable FiniteDomainSolver
+  main-is: FiniteDomainSolver.hs
+  buildable: True
+  build-depends:
+      base -any
+  other-modules:
+      Solver
+      Formula

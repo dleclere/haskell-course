@@ -1,0 +1,80 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>import Ex03(
+<span class="lineno">    2 </span>  prop_insert_on_empty_tree, 
+<span class="lineno">    3 </span>  prop_insert_preserves_bst,
+<span class="lineno">    4 </span>  prop_insert_adds_element,
+<span class="lineno">    5 </span>  prop_insert_does_not_change_other_elements,
+<span class="lineno">    6 </span>  prop_insert_duplicate_check,
+<span class="lineno">    7 </span>  BinaryTree,
+<span class="lineno">    8 </span>  BinaryTree(Leaf, Branch)
+<span class="lineno">    9 </span>  )
+<span class="lineno">   10 </span>import Test.QuickCheck
+<span class="lineno">   11 </span>
+<span class="lineno">   12 </span>main :: IO ()
+<span class="lineno">   13 </span><span class="decl"><span class="istickedoff">main = quickCheck $ prop_insert_on_empty_tree insert1</span>
+<span class="lineno">   14 </span><span class="spaces">                </span><span class="istickedoff">.&amp;. <span class="nottickedoff">prop_insert_preserves_bst insert1</span></span>
+<span class="lineno">   15 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_adds_element insert1</span></span>
+<span class="lineno">   16 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_does_not_change_other_elements insert1</span></span>
+<span class="lineno">   17 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_duplicate_check insert1</span></span>
+<span class="lineno">   18 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_on_empty_tree insert2</span></span>
+<span class="lineno">   19 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_preserves_bst insert2</span></span>
+<span class="lineno">   20 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_adds_element insert2</span></span>
+<span class="lineno">   21 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_does_not_change_other_elements insert2</span></span>
+<span class="lineno">   22 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_duplicate_check insert2</span></span>
+<span class="lineno">   23 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_on_empty_tree insert3</span></span>
+<span class="lineno">   24 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_preserves_bst insert3</span></span>
+<span class="lineno">   25 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_adds_element insert3</span></span>
+<span class="lineno">   26 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_does_not_change_other_elements insert3</span></span>
+<span class="lineno">   27 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_duplicate_check insert4</span></span>
+<span class="lineno">   28 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_on_empty_tree insert4</span></span>
+<span class="lineno">   29 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_preserves_bst insert4</span></span>
+<span class="lineno">   30 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_adds_element insert4</span></span>
+<span class="lineno">   31 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_does_not_change_other_elements insert4</span></span>
+<span class="lineno">   32 </span><span class="spaces">                </span><span class="istickedoff"><span class="nottickedoff">.&amp;. prop_insert_duplicate_check insert4</span></span></span>
+<span class="lineno">   33 </span>                
+<span class="lineno">   34 </span>                
+<span class="lineno">   35 </span>
+<span class="lineno">   36 </span>
+<span class="lineno">   37 </span>insert1 :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">   38 </span><span class="decl"><span class="istickedoff">insert1 i Leaf = Leaf</span>
+<span class="lineno">   39 </span><span class="spaces"></span><span class="istickedoff">insert1 i (Branch v l r) </span>
+<span class="lineno">   40 </span><span class="spaces">  </span><span class="istickedoff">| <span class="nottickedoff">i &lt; v</span> = <span class="nottickedoff">Branch v (insert1 i l) r</span></span>
+<span class="lineno">   41 </span><span class="spaces">  </span><span class="istickedoff">| <span class="nottickedoff">otherwise</span> =  <span class="nottickedoff">Branch v l (insert1 i r)</span></span></span>
+<span class="lineno">   42 </span>
+<span class="lineno">   43 </span>insert2 :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">   44 </span><span class="decl"><span class="nottickedoff">insert2 i Leaf = Branch i Leaf Leaf</span>
+<span class="lineno">   45 </span><span class="spaces"></span><span class="nottickedoff">insert2 i (Branch v l r) </span>
+<span class="lineno">   46 </span><span class="spaces">  </span><span class="nottickedoff">| i &lt; v = Branch v (insert2 i l) r</span>
+<span class="lineno">   47 </span><span class="spaces">  </span><span class="nottickedoff">| i &gt; v = Branch v l (insert2 i r)</span></span>
+<span class="lineno">   48 </span>
+<span class="lineno">   49 </span>insert3 :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">   50 </span><span class="decl"><span class="nottickedoff">insert3 i Leaf = Branch i Leaf Leaf</span>
+<span class="lineno">   51 </span><span class="spaces"></span><span class="nottickedoff">insert3 i (Branch v l r) </span>
+<span class="lineno">   52 </span><span class="spaces">  </span><span class="nottickedoff">| i &lt; v = Branch v (insert3 i l) r</span>
+<span class="lineno">   53 </span><span class="spaces">  </span><span class="nottickedoff">| i == v = Branch v l r</span>
+<span class="lineno">   54 </span><span class="spaces">  </span><span class="nottickedoff">| i &gt; v = Branch v l (insert3 i r)</span></span>
+<span class="lineno">   55 </span>
+<span class="lineno">   56 </span>insert4 :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">   57 </span><span class="decl"><span class="nottickedoff">insert4 i Leaf = Branch i Leaf Leaf</span>
+<span class="lineno">   58 </span><span class="spaces"></span><span class="nottickedoff">insert4 i (Branch v l r) </span>
+<span class="lineno">   59 </span><span class="spaces">  </span><span class="nottickedoff">| i &lt; v = Branch v l (insert4 i r)</span>
+<span class="lineno">   60 </span><span class="spaces">  </span><span class="nottickedoff">| otherwise = Branch v (insert4 i l) r</span></span>
+
+</pre>
+</body>
+</html>

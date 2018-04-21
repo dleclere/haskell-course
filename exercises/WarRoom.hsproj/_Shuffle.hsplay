@@ -1,0 +1,10 @@
+-- Haskell Playground 1.0
+unshuffle "shuffle.txt"
+
+lnNum "    |::458:::|  |"
+
+rmNum "|/|::123:::://|"
+
+let lns = ["     \\|::964::__|", "   /:/ ::542:: /"]
+  
+orderLns lns

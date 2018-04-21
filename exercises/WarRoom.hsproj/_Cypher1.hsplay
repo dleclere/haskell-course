@@ -1,0 +1,149 @@
+-- Haskell Playground 1.0
+
+toNum 'a'
+
+letterFreqs
+
+let testplaintext = "ATTACKATDAWN"
+
+let actualcypher = "LXFOPVEFRNHR"
+
+let testkey = "LEMON"
+
+let testcypher = encrypt testkey testplaintext
+
+decrypt testkey testcypher
+
+
+let cypher = stripSpaces "WJHZR DIAKZ TMCYS OMLVY HISNF BNZRP OESFJ RVLWL MIPOA LJAKD SQWLH KYSCN RMHPB OQNQQ MNBXC CACJN BOVVT LAUWJ RNISI FFBJO WZWIV NCWQM AUEEX TNOMR JIIYH ISNWD Y"
+
+let cypher2 = stripSpaces "QPWKA LVRXC QZIKG RBPFA EOMFL JMSDZ VDHXC XJYEB IMTRQ WNMEA IZRVK CVKVL XNEIC FZPZC ZZHKM  LVZVZ IZRRQ WDKEC HOSNY XXLSP MYKVQ XJTDC IOMEE XDQVS RXLRL  KZHOV"
+
+let cypher3 = stripSpaces "WJHZRDIAKZTMCYSOMLVYHISNFBNZRPOESFJRVLWLMIPOALJAKDSQWLHKYSCNRMHPBOQNQQMNBXCCACJNBOVVTLAUWJRNISIFFBJOWZWIVNCWQMAUEEXTNOMRJIIYHISNWD"
+
+splitToCols 5 cypher2
+
+--1   1.12
+--2   1.19
+--3   1.05
+--4   1.17
+--5   1.82
+--6   0.99
+--7   1.00
+--8   1.05
+--9   1.16
+--10  2.07
+
+--decrypt (guessKey 13 cypher) cypher
+
+decrypt "LKWMJVI" cypher
+
+--let guesses = guessKey2 9 cypher [] 4
+
+--guesses
+
+--decrypt (guesses!!0) cypher
+
+--decrypt (guesses!!1) cypher
+
+--bigramCorrelationScore "ajlhrodeCO"
+
+
+rankKeyOptions ["A", "B"] "Hello" [letterCorrelationScore , bigramCorrelationScore]
+
+--bigramCorrelationScore2 cypher
+
+filter (`isInfixOf` "THINKHEAP") bigrams
+
+let samples2 = ["IBJVDHEA","IBJVDHEA","IBJVDHEA","SBJVDHEA","SBJVDHEA","SBJVDHEA","IBCVDHEA","IBCVDHEA","IBCVDHEA"]
+
+let samples = ["SBCVDLOA","SBCVDLON"]
+
+
+decrypt (samples2!!1) cypher
+
+--aggregateColICMulti [2..20] cypher2
+
+let cols = splitToCols 8 cypher
+let ranked2 = map (rankSubOptions ['A'..'Z']) cols
+
+
+let ranked = map (map (fst) . rankSubOptions ['A'..'Z']) cols
+
+let c = 6
+
+ranked2!!c
+ranked!!c `intersect` ['A'..'Z']
+
+let best = take 1 ((ranked!!c) `intersect` ['A'..'Z'])
+
+best
+
+friedmanTestEnglish cypher
+
+let range = [3..15]
+-- VIRTUAL
+
+decrypt "EVERY" cypher2
+
+estLen (take ((length cypher) - 1) cypher) range
+
+let col = (splitToCols 5 cypher2)!!3
+
+rankSubOptions ['A'..'Z'] col
+
+estLen cypher range
+
+let keyLen = 8
+
+let freq = columnFreq keyLen cypher
+
+freq
+--printRows $ map (show) freq
+
+--printRows $ substituteRows (Map.fromList subs) rows
+
+
+
+--YHI
+--HIS
+--ISN
+let smp = ["SVJVDHEA","IVJVDHEA","SVJVDHEN","SVJVDHON"]
+
+octGrams
+
+
+let kk = drop (13 * 430) $ guessKey3 13 cypher [] 2
+
+kk
+
+--
+--let lens = guessKey2 8 cypher [letterCorrelationScore2] 3 
+--
+--lens
+--
+----lens
+--keyChar 'I' 'R'
+--
+--cypher
+--
+--let dkey = lens!!3
+
+let dkey = "UNDERBUDGETED"
+
+dkey
+
+let dplain = decrypt dkey cypher
+
+dplain
+
+let rows = chunksOf (length dkey) dplain
+
+countIC cypher $ cypher `shiftText` 4
+
+--estimateLenNGramReps cypher
+
+
+--printRows $ rows
+
+--readWordList "word-list.txt" cypher 13

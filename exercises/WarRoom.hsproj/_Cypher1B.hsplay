@@ -1,0 +1,92 @@
+-- Haskell Playground 1.0
+
+
+let cypher = map (toLower) $ stripSpaces "WJHZR DIAKZ TMCYS OMLVY HISNF BNZRP OESFJ RVLWL MIPOA LJAKD SQWLH KYSCN RMHPB OQNQQ MNBXC CACJN BOVVT LAUWJ RNISI FFBJO WZWIV NCWQM AUEEX TNOMR JIIYH ISNWD Y"
+
+let cypher2 =  map (toLower) $ stripSpaces "QPWKA LVRXC QZIKG RBPFA EOMFL JMSDZ VDHXC XJYEB IMTRQ WNMEA IZRVK CVKVL XNEIC FZPZC ZZHKM  LVZVZ IZRRQ WDKEC HOSNY XXLSP MYKVQ XJTDC IOMEE XDQVS RXLRL  KZHOV"
+
+
+cypher
+
+findKey cypher
+
+
+let cy = cypher
+let klen = 13
+
+let keyOpts = findKeys klen cy
+
+keyOpts
+
+let rankedp =  keyOpts --rankKeyOptions keyOpts cy [letterCorrelationScore2]
+
+--realToFrac . indexOfCoincidence
+ 
+let ranked = drop 60 rankedp
+
+decode (ranked!!0) cy
+
+decode (ranked!!1) cy
+
+decode (ranked!!2) cy
+
+decode (ranked!!3) cy
+
+decode (ranked!!4) cy
+
+decode (ranked!!5) cy
+
+decode (ranked!!6) cy
+
+decode (ranked!!7) cy
+
+decode (ranked!!8) cy
+
+decode (ranked!!9) cy
+
+decode (ranked!!10) cy
+
+decode (ranked!!11) cy
+
+decode (ranked!!12) cy
+
+decode (ranked!!13) cy
+
+decode (ranked!!14) cy
+
+decode (ranked!!15) cy
+
+decode (ranked!!16) cy
+
+decode (ranked!!17) cy
+
+"hello"
+
+
+crack cypher
+
+
+let bm = bestmatch cy
+bm
+
+let bms = bestmatches cy
+bms
+
+let alphas = separateAlphabets cy klen
+
+alphas
+
+[ map (int2let) (bestmatches s) | s <- alphas ]
+[ (int2let) (bestmatch s) | s <- alphas ]
+
+
+let table' = freqs cy
+table'
+
+crack cy
+
+-- QLQREJVXIWICXFZLIWHXMXIXRK
+
+--[ map (int2let) (bestmatches s) | s <- alphas ]
+
+sort [4,1,2,3]

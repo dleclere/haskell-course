@@ -1,0 +1,172 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>module Ex03 (
+<span class="lineno">    2 </span>  BinaryTree(..), isBST, insertBST, searchTrees,
+<span class="lineno">    3 </span>  prop_insert_on_empty_tree, prop_insert_preserves_bst, prop_insert_adds_element, prop_insert_does_not_change_other_elements,
+<span class="lineno">    4 </span>  prop_insert_duplicate_check,
+<span class="lineno">    5 </span>  prop_delete_detect_error, prop_delete_preserves_bst, prop_delete_removes_element, prop_delete_does_not_change_other_elements,
+<span class="lineno">    6 </span>  height, size
+<span class="lineno">    7 </span>) where
+<span class="lineno">    8 </span>
+<span class="lineno">    9 </span>import Test.QuickCheck
+<span class="lineno">   10 </span>import Data.List(sort, nub, intersect, delete)
+<span class="lineno">   11 </span>
+<span class="lineno">   12 </span>data BinaryTree = Branch Integer BinaryTree BinaryTree
+<span class="lineno">   13 </span>                | Leaf
+<span class="lineno">   14 </span>                deriving (<span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff">Show</span></span></span></span>, <span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff">Ord</span></span></span></span></span></span></span></span></span></span>, <span class="decl"><span class="istickedoff"><span class="decl"><span class="nottickedoff">Eq</span></span></span></span>)
+<span class="lineno">   15 </span>
+<span class="lineno">   16 </span>isBST :: BinaryTree -&gt; Bool
+<span class="lineno">   17 </span><span class="decl"><span class="nottickedoff">isBST Leaf = True</span>
+<span class="lineno">   18 </span><span class="spaces"></span><span class="nottickedoff">isBST (Branch v l r) = allTree (&lt; v) l &amp;&amp; allTree (&gt;= v) r &amp;&amp; isBST l &amp;&amp; isBST r</span>
+<span class="lineno">   19 </span><span class="spaces">  </span><span class="nottickedoff">where allTree :: (Integer -&gt; Bool) -&gt; BinaryTree -&gt; Bool</span>
+<span class="lineno">   20 </span><span class="spaces">        </span><span class="nottickedoff">allTree f (Branch v l r) = f v &amp;&amp; allTree f l &amp;&amp; allTree f r</span>
+<span class="lineno">   21 </span><span class="spaces">        </span><span class="nottickedoff">allTree f (Leaf) = True</span></span>       
+<span class="lineno">   22 </span>
+<span class="lineno">   23 </span>insertBST :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">   24 </span><span class="decl"><span class="nottickedoff">insertBST i Leaf = Branch i Leaf Leaf</span>
+<span class="lineno">   25 </span><span class="spaces"></span><span class="nottickedoff">insertBST i (Branch v l r) </span>
+<span class="lineno">   26 </span><span class="spaces">  </span><span class="nottickedoff">| i &lt; v = Branch v (insertBST i l) r</span>
+<span class="lineno">   27 </span><span class="spaces">  </span><span class="nottickedoff">| otherwise = Branch v l (insertBST i r)</span></span>   
+<span class="lineno">   28 </span>
+<span class="lineno">   29 </span>searchTrees :: Gen BinaryTree
+<span class="lineno">   30 </span><span class="decl"><span class="nottickedoff">searchTrees = sized searchTrees'</span>
+<span class="lineno">   31 </span><span class="spaces">  </span><span class="nottickedoff">where </span>
+<span class="lineno">   32 </span><span class="spaces">   </span><span class="nottickedoff">searchTrees' 0 = return Leaf</span>
+<span class="lineno">   33 </span><span class="spaces">   </span><span class="nottickedoff">searchTrees' n = do </span>
+<span class="lineno">   34 </span><span class="spaces">      </span><span class="nottickedoff">v &lt;- (arbitrary :: Gen Integer)</span>
+<span class="lineno">   35 </span><span class="spaces">      </span><span class="nottickedoff">fmap (insertBST v) (searchTrees' $ n - 1)</span></span>
+<span class="lineno">   36 </span>
+<span class="lineno">   37 </span>--------------
+<span class="lineno">   38 </span>flatten :: BinaryTree -&gt; [Integer]
+<span class="lineno">   39 </span><span class="decl"><span class="nottickedoff">flatten Leaf = []</span>
+<span class="lineno">   40 </span><span class="spaces"></span><span class="nottickedoff">flatten (Branch i t1 t2) = flatten(t1) ++ [i] ++ flatten(t2)</span></span>
+<span class="lineno">   41 </span>
+<span class="lineno">   42 </span>dSort :: [Integer] -&gt; [Integer]
+<span class="lineno">   43 </span><span class="decl"><span class="nottickedoff">dSort list = nub $ sort list</span></span>
+<span class="lineno">   44 </span>
+<span class="lineno">   45 </span><span class="decl"><span class="istickedoff">prop_insert_on_empty_tree insertFunction integer = (insertFunction <span class="nottickedoff">integer</span> Leaf) == Branch <span class="nottickedoff">integer</span> <span class="nottickedoff">Leaf</span> <span class="nottickedoff">Leaf</span></span></span>
+<span class="lineno">   46 </span>
+<span class="lineno">   47 </span><span class="decl"><span class="nottickedoff">prop_insert_preserves_bst insertFunction integer = </span>
+<span class="lineno">   48 </span><span class="spaces">  </span><span class="nottickedoff">forAll searchTrees $ \x -&gt; isBST(insertFunction integer x)</span></span>
+<span class="lineno">   49 </span>
+<span class="lineno">   50 </span>hasElement :: Integer -&gt; BinaryTree -&gt; Bool
+<span class="lineno">   51 </span><span class="decl"><span class="nottickedoff">hasElement i Leaf = False</span>
+<span class="lineno">   52 </span><span class="spaces"></span><span class="nottickedoff">hasElement i (Branch v l r)</span>
+<span class="lineno">   53 </span><span class="spaces">  </span><span class="nottickedoff">| i == v = True</span>
+<span class="lineno">   54 </span><span class="spaces">  </span><span class="nottickedoff">| otherwise = hasElement i l || hasElement i r</span></span>
+<span class="lineno">   55 </span>
+<span class="lineno">   56 </span><span class="decl"><span class="nottickedoff">prop_insert_adds_element insertFunction integer = </span>
+<span class="lineno">   57 </span><span class="spaces">  </span><span class="nottickedoff">forAll searchTrees $ \x -&gt; (not(hasElement integer x)) ==&gt; (hasElement integer $ insertFunction integer x)</span></span>
+<span class="lineno">   58 </span>  
+<span class="lineno">   59 </span>forAllEls :: (Integer -&gt; Bool) -&gt; BinaryTree -&gt; Bool
+<span class="lineno">   60 </span><span class="decl"><span class="nottickedoff">forAllEls fn Leaf = False</span>
+<span class="lineno">   61 </span><span class="spaces"></span><span class="nottickedoff">forAllEls fn (Branch v l r) = (fn v) &amp;&amp; (forAllEls fn l) &amp;&amp; (forAllEls fn r)</span></span>
+<span class="lineno">   62 </span>
+<span class="lineno">   63 </span>a :: (Integer -&gt; BinaryTree -&gt; BinaryTree) -&gt; Integer -&gt; Integer -&gt; BinaryTree -&gt; Bool
+<span class="lineno">   64 </span><span class="decl"><span class="nottickedoff">a insertFunction integer newInteger x = (((sort (flatten (insertFunction integer x)))) `intersect` ((sort (flatten (insertFunction newInteger x)))) == sort (flatten x))</span></span>
+<span class="lineno">   65 </span>
+<span class="lineno">   66 </span><span class="decl"><span class="nottickedoff">prop_insert_does_not_change_other_elements insertFunction integer newInteger = </span>
+<span class="lineno">   67 </span><span class="spaces">  </span><span class="nottickedoff">integer /= newInteger ==&gt;</span>
+<span class="lineno">   68 </span><span class="spaces">    </span><span class="nottickedoff">forAll searchTrees $ \x -&gt; a insertFunction integer newInteger x</span></span>
+<span class="lineno">   69 </span>
+<span class="lineno">   70 </span>hasDuplicates :: BinaryTree -&gt; Bool
+<span class="lineno">   71 </span><span class="decl"><span class="nottickedoff">hasDuplicates Leaf = False</span>
+<span class="lineno">   72 </span><span class="spaces"></span><span class="nottickedoff">hasDuplicates (Branch i l r) = (hasElement i l) || (hasElement i r) || (hasDuplicates l) || (hasDuplicates r)</span></span>
+<span class="lineno">   73 </span>
+<span class="lineno">   74 </span>countElement :: Integer -&gt; BinaryTree -&gt; Integer
+<span class="lineno">   75 </span><span class="decl"><span class="nottickedoff">countElement i Leaf = 0</span>
+<span class="lineno">   76 </span><span class="spaces"></span><span class="nottickedoff">countElement i (Branch v l r)</span>
+<span class="lineno">   77 </span><span class="spaces">  </span><span class="nottickedoff">| i == v = 1 + childCount</span>
+<span class="lineno">   78 </span><span class="spaces">  </span><span class="nottickedoff">| otherwise = childCount</span>
+<span class="lineno">   79 </span><span class="spaces">  </span><span class="nottickedoff">where childCount = (countElement i l) + (countElement i r)</span></span>
+<span class="lineno">   80 </span>
+<span class="lineno">   81 </span>hasntIncreasedDuplicates :: Integer -&gt; (Integer -&gt; BinaryTree -&gt; BinaryTree) -&gt; BinaryTree -&gt; Bool
+<span class="lineno">   82 </span><span class="decl"><span class="nottickedoff">hasntIncreasedDuplicates i insertFn tree</span>
+<span class="lineno">   83 </span><span class="spaces">  </span><span class="nottickedoff">| iCount == 0 = pCount == 1</span>
+<span class="lineno">   84 </span><span class="spaces">  </span><span class="nottickedoff">| otherwise = pCount == iCount</span>
+<span class="lineno">   85 </span><span class="spaces">  </span><span class="nottickedoff">where iCount = countElement i tree</span>
+<span class="lineno">   86 </span><span class="spaces">        </span><span class="nottickedoff">pCount = (countElement i (insertFn i tree))</span></span>
+<span class="lineno">   87 </span>
+<span class="lineno">   88 </span><span class="decl"><span class="nottickedoff">prop_insert_duplicate_check insertFunction integer =</span>
+<span class="lineno">   89 </span><span class="spaces">  </span><span class="nottickedoff">forAll searchTrees $ \x -&gt; hasntIncreasedDuplicates integer (insertFunction) x</span></span>
+<span class="lineno">   90 </span>  
+<span class="lineno">   91 </span>insert1 :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">   92 </span><span class="decl"><span class="nottickedoff">insert1 i Leaf = Leaf</span>
+<span class="lineno">   93 </span><span class="spaces"></span><span class="nottickedoff">insert1 i (Branch v l r) </span>
+<span class="lineno">   94 </span><span class="spaces">  </span><span class="nottickedoff">| i &lt; v = Branch v (insert1 i l) r</span>
+<span class="lineno">   95 </span><span class="spaces">  </span><span class="nottickedoff">| otherwise =  Branch v l (insert1 i r)</span></span>
+<span class="lineno">   96 </span>
+<span class="lineno">   97 </span>insert2 :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">   98 </span><span class="decl"><span class="nottickedoff">insert2 i Leaf = Branch i Leaf Leaf</span>
+<span class="lineno">   99 </span><span class="spaces"></span><span class="nottickedoff">insert2 i (Branch v l r) </span>
+<span class="lineno">  100 </span><span class="spaces">  </span><span class="nottickedoff">| i &lt; v = Branch v (insert2 i l) r</span>
+<span class="lineno">  101 </span><span class="spaces">  </span><span class="nottickedoff">| i &gt; v = Branch v l (insert2 i r)</span></span>
+<span class="lineno">  102 </span>
+<span class="lineno">  103 </span>insert3 :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">  104 </span><span class="decl"><span class="nottickedoff">insert3 i Leaf = Branch i Leaf Leaf</span>
+<span class="lineno">  105 </span><span class="spaces"></span><span class="nottickedoff">insert3 i (Branch v l r) </span>
+<span class="lineno">  106 </span><span class="spaces">  </span><span class="nottickedoff">| i &lt; v = Branch v (insert3 i l) r</span>
+<span class="lineno">  107 </span><span class="spaces">  </span><span class="nottickedoff">| i == v = Branch v l r</span>
+<span class="lineno">  108 </span><span class="spaces">  </span><span class="nottickedoff">| i &gt; v = Branch v l (insert3 i r)</span></span>
+<span class="lineno">  109 </span>
+<span class="lineno">  110 </span>insert4 :: Integer -&gt; BinaryTree -&gt; BinaryTree
+<span class="lineno">  111 </span><span class="decl"><span class="nottickedoff">insert4 i Leaf = Branch i Leaf Leaf</span>
+<span class="lineno">  112 </span><span class="spaces"></span><span class="nottickedoff">insert4 i (Branch v l r) </span>
+<span class="lineno">  113 </span><span class="spaces">  </span><span class="nottickedoff">| i &lt; v = Branch v l (insert4 i r)</span>
+<span class="lineno">  114 </span><span class="spaces">  </span><span class="nottickedoff">| otherwise = Branch v (insert4 i l) r</span></span>
+<span class="lineno">  115 </span>
+<span class="lineno">  116 </span>
+<span class="lineno">  117 </span>
+<span class="lineno">  118 </span>------------
+<span class="lineno">  119 </span>
+<span class="lineno">  120 </span><span class="decl"><span class="nottickedoff">prop_delete_detect_error deleteFunction i1 i2 = </span>
+<span class="lineno">  121 </span><span class="spaces">  </span><span class="nottickedoff">i1 /= i2 ==&gt;</span>
+<span class="lineno">  122 </span><span class="spaces">    </span><span class="nottickedoff">deleteFunction i1 (Branch i2 Leaf Leaf) == Branch i2 Leaf Leaf</span></span> 
+<span class="lineno">  123 </span>
+<span class="lineno">  124 </span><span class="decl"><span class="nottickedoff">prop_delete_preserves_bst deleteFunction integer = </span>
+<span class="lineno">  125 </span><span class="spaces">  </span><span class="nottickedoff">forAll searchTrees $ \x -&gt; isBST(deleteFunction integer x)</span></span>
+<span class="lineno">  126 </span>
+<span class="lineno">  127 </span><span class="decl"><span class="nottickedoff">prop_delete_removes_element deleteFunction integer = </span>
+<span class="lineno">  128 </span><span class="spaces">  </span><span class="nottickedoff">forAll searchTrees $ \x -&gt; (hasElement integer x) ==&gt; </span>
+<span class="lineno">  129 </span><span class="spaces">    </span><span class="nottickedoff">not(hasElement integer $ deleteFunction integer x)</span></span>
+<span class="lineno">  130 </span>
+<span class="lineno">  131 </span>doe :: (Integer -&gt; BinaryTree -&gt; BinaryTree) -&gt; Integer -&gt; Integer -&gt; BinaryTree -&gt; Bool
+<span class="lineno">  132 </span><span class="decl"><span class="nottickedoff">doe fn i1 i2 x = (l1 `intersect` l2) == delete i1 (delete i2 (sort (flatten x)))</span>
+<span class="lineno">  133 </span><span class="spaces">  </span><span class="nottickedoff">where l1 = sort (flatten (fn i1 x))</span>
+<span class="lineno">  134 </span><span class="spaces">        </span><span class="nottickedoff">l2 = sort (flatten (fn i2 x))</span></span>
+<span class="lineno">  135 </span>
+<span class="lineno">  136 </span><span class="decl"><span class="nottickedoff">prop_delete_does_not_change_other_elements deleteFunction integer newInteger =</span>
+<span class="lineno">  137 </span><span class="spaces">  </span><span class="nottickedoff">integer /= newInteger ==&gt;</span>
+<span class="lineno">  138 </span><span class="spaces">    </span><span class="nottickedoff">forAll searchTrees $ \x -&gt; doe deleteFunction integer newInteger x</span></span>
+<span class="lineno">  139 </span>    
+<span class="lineno">  140 </span>----------------
+<span class="lineno">  141 </span>
+<span class="lineno">  142 </span>height :: BinaryTree -&gt; Integer
+<span class="lineno">  143 </span><span class="decl"><span class="nottickedoff">height Leaf = 0</span>
+<span class="lineno">  144 </span><span class="spaces"></span><span class="nottickedoff">height (Branch v l r) = 1 + max (height l) (height r)</span></span>
+<span class="lineno">  145 </span>      
+<span class="lineno">  146 </span>size :: BinaryTree -&gt; Integer
+<span class="lineno">  147 </span><span class="decl"><span class="nottickedoff">size Leaf = 0</span>
+<span class="lineno">  148 </span><span class="spaces"></span><span class="nottickedoff">size (Branch v l r) = 1 + max (size l) (size r)</span></span>
+<span class="lineno">  149 </span>
+<span class="lineno">  150 </span><span class="decl"><span class="nottickedoff">quickCheck' prop</span>
+<span class="lineno">  151 </span><span class="spaces">  </span><span class="nottickedoff">= output &lt;$&gt;</span>
+<span class="lineno">  152 </span><span class="spaces">    </span><span class="nottickedoff">quickCheckWithResult stdArgs{chatty=False} prop</span></span>
+
+</pre>
+</body>
+</html>

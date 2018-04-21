@@ -1,0 +1,15 @@
+-- Haskell Playground 1.0
+import Graphics.SpriteKit
+  hiding (Path)
+
+
+drawPicture 12.0 scene
+
+
+
+
+
+
+let line = ((400, 400), (620, 620))
+
+drawPicture 1 (nestedSquares (0.9) (10) red line)

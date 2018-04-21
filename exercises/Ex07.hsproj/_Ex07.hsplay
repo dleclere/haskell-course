@@ -1,0 +1,25 @@
+-- Haskell Playground 1.0
+let v1 = (VCons 'a' VNil)
+
+headV v1
+
+--headV VNil
+
+let v2 = (VCons 'a' (VCons 'b' (VCons 'c' VNil)))
+
+let v3 = (VCons '1' (VCons '2' (VCons '3' VNil)))
+
+let v4 = (VCons '!' (VCons '@' (VCons '#' VNil)))
+
+let v5 = (VCons '!' (VCons '@' (VCons '#' (VCons '$' VNil))))
+
+let c1 = (VCons v2 (VCons v3 (VCons v4 VNil)))
+
+let c2 = (VCons v2 (VCons v3 (VCons v4 VNil)))
+
+c1
+
+concatV c1
+
+
+appendV VNil v2

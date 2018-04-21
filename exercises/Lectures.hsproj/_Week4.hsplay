@@ -1,0 +1,16 @@
+-- Haskell Playground 1.0
+merge [] [1,2]
+
+merge [1,2,3] [3,5]
+
+split [1, 2, 3, 4, 5, 6]
+
+mergesort ["Haskell", "COMP3141", "GHC", "Alpha", "Types"]
+
+quickCheck' prop_preservesLength
+
+quickCheck' prop_idempotent
+
+quickCheck' prop_ordered
+
+quickCheck' prop_permutation

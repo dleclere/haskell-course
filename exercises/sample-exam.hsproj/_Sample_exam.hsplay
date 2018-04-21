@@ -1,0 +1,13 @@
+-- Haskell Playground 1.0
+let vec1 = VCons 3 $ VCons 6 VNil
+
+let vec2 = VCons 5 $ VCons 9 VNil
+
+let vec3 = VCons vec1 $ VCons vec2 VNil
+
+
+concat3 vec3
+
+let a = Succ $ Succ Zero
+
+replicateV (Succ (Succ (Succ (Zero)))) 'a'

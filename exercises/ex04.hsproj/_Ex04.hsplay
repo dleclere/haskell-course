@@ -1,0 +1,5 @@
+-- Haskell Playground 1.0
+--capitalise "input.txt" "/Users/dleclere/uni/2016/semester-1/COMP3141/exercises/output.txt"
+
+
+--split '\n' (pack "hello")

@@ -1,0 +1,9 @@
+-- Haskell Playground 1.0
+(printf (L "Hello " $ S $ L "WW" $ S $ L "! You are " $ I $ L " years old!" $ X)) "A" "B" 8
+
+(printf (S $ S $ S $ I $ I $ I $ X)) "A" "B" "C" 1 2 3
+
+
+printf X
+
+(printf (S X)) "Hello"

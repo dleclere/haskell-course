@@ -1,0 +1,35 @@
+-- Haskell Playground 1.0
+
+-- PART 1
+quickCheck' prop_mysteryPred_1
+
+quickCheck' prop_mysteryPred_2
+
+-- Part 2
+quickCheck' prop_mysterious_1
+
+quickCheck' prop_mysterious_2
+
+-- Part 3
+
+quickCheck' prop_sortedListsWithoutDuplicates_1
+
+quickCheck' prop_sortedListsWithoutDuplicates_2
+
+
+quickCheck' prop_astonishing_1
+
+quickCheck' prop_astonishing_2
+
+quickCheck' prop_astonishing_3
+
+
+let t1 = astonishing([-7,-5,-2,-1,2,3,6])
+
+t1
+
+treeState t1
+
+rotateRight t1 == t1
+
+isBalanced t1

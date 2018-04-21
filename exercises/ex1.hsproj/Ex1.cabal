@@ -1,0 +1,19 @@
+name: Ex1
+version: 1.0
+cabal-version: 1.6
+build-type: Simple
+license: AllRightsReserved
+stability: experimental
+category: Exercise
+author: Manuel Chakravarty
+x-ghc-framework-version: 7.10.3-5.4-1
+x-last-ide-version: HfM1.2.0
+Executable Ex1
+  main-is: Ex01.hs
+  buildable: True
+  build-depends:
+      base -any,
+      JuicyPixels -any,
+      Rasterific -any
+  other-modules:
+      LineGraphics

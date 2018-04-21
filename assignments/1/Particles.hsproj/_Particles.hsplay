@@ -1,0 +1,29 @@
+-- Haskell Playground 1.0
+
+sunEarth <- readWorld  "SunEarth.world"
+simulate sunEarth
+
+
+
+
+
+
+fourParticles <- readWorld  "FourParticles.world"
+simulate fourParticles
+
+
+
+
+
+
+
+
+random <- readWorld  "Random.world"
+simulate random
+
+
+
+
+
+
+

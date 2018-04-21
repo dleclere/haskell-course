@@ -1,0 +1,26 @@
+name: Particles
+version: 1.0
+cabal-version: 1.11
+build-type: Simple
+license: AllRightsReserved
+stability: experimental
+data-files:
+    Random.world
+    SunEarth.world
+    FourParticles.world
+x-ghc-framework-version: 7.10.3-5.4-1
+x-last-ide-version: HfM1.2.0
+Executable Particles
+  main-is: Particles.hs
+  buildable: True
+  build-depends:
+      base -any,
+      QuickCheck -any,
+      spritekit -any
+  other-modules:
+      Simulation
+      TestSupport
+      Physics
+      Test
+      Visualise
+      World

@@ -1,0 +1,29 @@
+name: WarRoom
+version: 1.0
+cabal-version: 1.6
+build-type: Simple
+license: AllRightsReserved
+stability: experimental
+data-files:
+    shuffle.txt
+    word-list.txt
+x-ghc-framework-version: 7.10.3-5.4-1
+x-last-ide-version: HfM1.2.0
+Executable WarRoom
+  main-is: WarRoom.hs
+  buildable: True
+  build-depends:
+      base -any,
+      containers -any,
+      regex-tdfa -any,
+      split -any,
+      raw-strings-qq -any,
+      regex-tdfa-text -any
+  other-modules:
+      Common
+      Cypher1B
+      Code2
+      Cypher1
+      Shuffle
+      Codeword
+      IC
